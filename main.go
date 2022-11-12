@@ -64,8 +64,9 @@ func gtfobins(binary string) {
 		fmt.Println(err)
 	}
 
-	yellow := color.New(color.FgYellow)
-	boldYellow := yellow.Add(color.Bold)
+	yellowColor := color.New(color.FgYellow)
+	yellow := yellowColor.SprintFunc()
+	boldYellow := yellowColor.Add(color.Bold)
 	green := color.New(color.FgGreen).SprintFunc()
 	magenta := color.New(color.FgHiMagenta).SprintFunc()
 
@@ -80,19 +81,23 @@ func gtfobins(binary string) {
 				details := v.([]interface{})[0].(map[interface{}]interface{})
 
 				// This is so that all the code section start from the same point.
-				code := strings.ReplaceAll(fmt.Sprintf("%v", details["code"]), "\n", "\n\t")
+				// Also removed the leading and tailing spaces 
+				code := strings.ReplaceAll(
+					strings.TrimSpace(fmt.Sprintf("%v", details["code"])),
+					"\n", "\n\t",
+				)
 
 				// Just formatting and printing.
+				fmt.Printf("Type:\t%v\n", magenta(k))
 				if details["description"] != nil {
-					boldYellow.Println("\n# ", details["description"])
+					fmt.Printf("Desc:\t%v\n", yellow(details["description"]))
 				}
 				fmt.Printf("Code:\t%v \n", green(code))
-				fmt.Printf("Type:\t%v\n", magenta(k))
-				fmt.Println()
+				fmt.Println("\n")
 			}
 		case string:
-			boldYellow.Println("\n# ", key)
-
+			fmt.Println("\n")
+			boldYellow.Println(binary, "=", key, "\n")
 		}
 
 	}
