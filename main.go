@@ -70,6 +70,9 @@ func gtfobins(binary string) {
 	green := color.New(color.FgGreen).SprintFunc()
 	magenta := color.New(color.FgHiMagenta).SprintFunc()
 
+	displayURL := fmt.Sprintf(websiteURL, binary)
+	fmt.Println(fmt.Sprintf("\nGTFO:\t%s\n", magenta(displayURL)))
+
 	// This is a weird for loop to get out the required
 	// values out of the map[interface{}]interface{}
 	for _, key := range config {
@@ -93,17 +96,12 @@ func gtfobins(binary string) {
 					fmt.Printf("Desc:\t%v\n", yellow(details["description"]))
 				}
 				fmt.Printf("Code:\t%v \n", green(code))
-				fmt.Println("\n")
+				fmt.Println()
 			}
 		case string:
-			displayURL := fmt.Sprintf(websiteURL, binary)
-
-			fmt.Println("\n")
-			fmt.Println(yellow(key), "\n")
-			fmt.Println(fmt.Sprintf("GTFO:\t%s", magenta(displayURL)))
-			fmt.Println("\n")
+			fmt.Println(yellow(key))
+			fmt.Println()
 		}
-
 	}
 }
 
