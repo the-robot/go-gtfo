@@ -18,6 +18,7 @@ import (
 //TODO: Lot of code is repeating. Need to figure it out.
 var rawBinURL = "https://raw.githubusercontent.com/GTFOBins/GTFOBins.github.io/master/_gtfobins/%s.md"
 var rawExeURL = "https://raw.githubusercontent.com/LOLBAS-Project/LOLBAS-Project.github.io/master/_lolbas/%s.md"
+var websiteURL = "https://gtfobins.github.io/gtfobins/%s/"
 
 func init() {
 	flag.Usage = func() {
@@ -66,7 +67,6 @@ func gtfobins(binary string) {
 
 	yellowColor := color.New(color.FgYellow)
 	yellow := yellowColor.SprintFunc()
-	boldYellow := yellowColor.Add(color.Bold)
 	green := color.New(color.FgGreen).SprintFunc()
 	magenta := color.New(color.FgHiMagenta).SprintFunc()
 
@@ -81,7 +81,7 @@ func gtfobins(binary string) {
 				details := v.([]interface{})[0].(map[interface{}]interface{})
 
 				// This is so that all the code section start from the same point.
-				// Also removed the leading and tailing spaces 
+				// Also removed the leading and tailing spaces
 				code := strings.ReplaceAll(
 					strings.TrimSpace(fmt.Sprintf("%v", details["code"])),
 					"\n", "\n\t",
@@ -96,8 +96,12 @@ func gtfobins(binary string) {
 				fmt.Println("\n")
 			}
 		case string:
+			displayURL := fmt.Sprintf(websiteURL, binary)
+
 			fmt.Println("\n")
-			boldYellow.Println(binary, "=", key, "\n")
+			fmt.Println(yellow(key), "\n")
+			fmt.Println(fmt.Sprintf("GTFO:\t%s", magenta(displayURL)))
+			fmt.Println("\n")
 		}
 
 	}
