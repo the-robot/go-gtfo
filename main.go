@@ -20,19 +20,21 @@ var rawBinURL = "https://raw.githubusercontent.com/GTFOBins/GTFOBins.github.io/m
 var rawExeURL = "https://raw.githubusercontent.com/LOLBAS-Project/LOLBAS-Project.github.io/master/_lolbas/%s.md"
 var websiteURL = "https://gtfobins.github.io/gtfobins/%s/"
 
-func init() {
-	flag.Usage = func() {
-		h := []string{
-			"Search gtfobin from terminal",
-			"",
-			"Options:",
-			"  -b, --bin <binary>       Search Linux binaries on gtfobins",
-			"  -e, --exe <EXE>          Search Windows exe on lolbas",
-			"",
-		}
+var helpMessage = []string{
+	"Search gtfobin from terminal",
+	"",
+	"Options:",
+	"  -b, --bin <binary>       Search Linux binaries on gtfobins",
+	"  -e, --exe <EXE>          Search Windows exe on lolbas",
+	"",
+}
 
-		fmt.Fprintf(os.Stderr, strings.Join(h, "\n"))
-	}
+func help() {
+	fmt.Fprintf(os.Stderr, strings.Join(helpMessage, "\n"))
+}
+
+func init() {
+	flag.Usage = help
 }
 
 // Function to get the gtfobins yaml file and parse it
@@ -53,7 +55,7 @@ func gtfobins(binary string) {
 
 	// Just incase someone entered some random name
 	if req.StatusCode == 404 {
-		color.Red("\n[!] Binary not found on GTFObins")
+		color.Red("[!] Binary not found on GTFObins")
 		return
 	}
 
@@ -71,7 +73,7 @@ func gtfobins(binary string) {
 	magenta := color.New(color.FgHiMagenta).SprintFunc()
 
 	displayURL := fmt.Sprintf(websiteURL, binary)
-	fmt.Println(fmt.Sprintf("\nGTFO:\t%s\n", magenta(displayURL)))
+	fmt.Println(fmt.Sprintf("GTFO:\t%s\n", magenta(displayURL)))
 
 	// This is a weird for loop to get out the required
 	// values out of the map[interface{}]interface{}
@@ -176,10 +178,13 @@ func main() {
 	flag.Parse()
 	myFigure := figure.NewColorFigure("# gtfo", "big", "green", true)
 	myFigure.Print()
+	fmt.Println()
 
 	if bin != "" {
 		gtfobins(bin)
 	} else if exe != "" {
 		lolbas(exe)
+	} else {
+		help()
 	}
 }
