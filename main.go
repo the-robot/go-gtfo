@@ -53,7 +53,7 @@ func gtfobins(binary string) {
 
 	// Just incase someone entered some random name
 	if req.StatusCode == 404 {
-		color.Red("[!] Binary not found on GTFObins")
+		color.Red("\n[!] Binary not found on GTFObins")
 		return
 	}
 
